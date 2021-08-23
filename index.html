@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="jquery.js"></script>
+    <title>JSON Test</title>
+</head>
+<body>
+    <div>
+        <button type="button" class="btn btn-primary">Hi</button>
+    </div>
+    <div id='myData'>
+    </div>
+    <script>
+        fetch('./data_example.json', {
+            method: 'GET',
+            headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            appendData(data);
+        })
+        .catch(function (err) {
+            console.log('error: ' + err);
+        });
+        function appendData(data) {
+            var mainContainer = document.getElementById("myData");
+            for (var i = 0; i < data.length; i++) {
+                var a = document.createElement("a");
+                a.innerHTML = data[i].Department + ': ' + data[i].Name + '<br>';
+                a.href = 'next.html'
+                a.class = 'link-info'
+                mainContainer.appendChild(a);
+            }
+        }
+    </script>
+</body>
+</html>
