@@ -1,0 +1,18 @@
+[
+    {"Co-no":"F720900",
+    "Department":"資訊系",
+    "Course":[
+        {
+            "Name":"數位系統導論",
+            "Class-code":["1","2"],
+            "Year-sem":"109-1",
+            "Teacher":"陳培因"
+        },
+        {
+            "Name":"數位系統導論",
+            "Class-code":["1","2"],
+            "Year-sem":"108-1",
+            "Teacher":"陳培因"
+        }]
+    }
+]
