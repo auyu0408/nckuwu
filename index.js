@@ -1,5 +1,5 @@
-var table = document.querySelector('table');
-var requestURL = "index.html.json";
+var ul = document.querySelector('ul');
+var requestURL = "index_example.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
@@ -10,14 +10,18 @@ request.onload = function(){
 }
 function showDatas(Datajson){
     for (i=0; i<Datajson.length; i++){
-        var Outside = document.createElement('tr');
-        var Td1 = document.createElement('td');
-        var Td2 = document.createElement('td');
-        Td1.textContent = Datajson[i].Name;
-        Td2.textContent = Datajson[i].Department;
-        Outside.appendChild(Td1);
-        Outside.appendChild(Td2);
+        var Link = document.createElement('a');
+        var Name = document.createElement('div');
+        var Department = document.createElement('span');
+        Link.href = "#";
+        Link.className = "list-group-item d-flex list-group-item-action";
+        Name.textContent = Datajson[i].Name;
+        Name.className = "me-auto";
+        Department.textContent = Datajson[i].Department;
+        Department.className = "badge bg-info rounded-pill";
+        Link.appendChild(Name);
+        Link.appendChild(Department);
 
-        table.appendChild(Outside)
+        ul.appendChild(Link);
     }
 }
