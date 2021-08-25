@@ -1,5 +1,5 @@
 var table = document.querySelector('table');
-var requestURL = "F720900.json";
+var requestURL = "index.html.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
