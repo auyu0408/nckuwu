@@ -7,24 +7,53 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <scrip src="jquery.js"></script>
+    <link href="style.css" rel="stylesheet">
     <title>JSON Test</title>
 </head>
 <body>
-    <div class="container col-6">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid d-flex">
-                <span class="navbar-brand align-middle">M3ow </span>
-                <div class="col-6">
-                    <form class="d-flex" action="index.html">
-                        <input class="form-control light-table-filter" type="search" id="q" name="q" placeholder="Key words">
-                        <button type="submit" class="btn btn-outline-info">Search</button>
-                    </form>
-                    <div class="list-group" id="list"></div>
-                </div>
+    <nav class="navbar navbar-light shadow" style="background-color: #f3ddb6;">
+        <div class="container-fluid">
+            <div class="col-1"></div>
+            <div class="col-2 text-center">
+                <a href="index.html" class="navbar-brand align-middle fs-3 fw-bold" style="color: #c1535c;">Fire Bone</a>
             </div>
-        </nav>
-        <br>
-        <div id="card" class="card"></div>
+            <div class="col-6">
+                <form class="d-flex" action="index.html">
+                    <input class="form-control light-table-filter" type="search" id="q" name="q" placeholder="Key words">
+                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                </form>
+                <div class="list-group box-shadow" id="list"></div>
+            </div>
+            <div class="col-2 text-end">
+                <a href="https://github.com/auyu0408/schoolWorks"><img src="icon.png" width="30" height="30"></a>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </nav>
+    <br>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-2 text-center">
+            <p id="last"></p>
+            <p>
+                <a href="upload.html" class="fs-6" style="color: #e3a576; text-decoration:none;">
+                    <img src="pic/upload.svg" width="40" height="40">
+                    <br>
+                    新增資料
+                </a>
+            </p>
+            <p>
+                <a href="#" class="fs-6" style="color: #e3a576; text-decoration:none;">
+                    <img src="pic/mail.svg" width="40" height="40">
+                    <br>
+                    聯絡我們
+                </a>
+            </p>
+        </div>
+        <div class="container col-6">
+            <div id="card" class="card"></div>
+        </div>
+        <div class="col-3"></div>
     </div>
     <script src="search.js"></script>
     <script src="detail.js"></script>

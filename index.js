@@ -1,5 +1,6 @@
 var ul = document.querySelector('ul');
 var oinput = document.getElementById('q');
+var click = document.getElementById('share');
 var url = location.search;
 var requestURL = "file_simulate/index_example.json";
 var request = new XMLHttpRequest();
@@ -33,8 +34,9 @@ function showDatas(Datajson, obj){
         Link.className = "list-group-item d-flex list-group-item-action";
         Name.textContent = Datajson[i].Name;
         Name.className = "me-auto";
+        Name.style = "color: #733830;"
         Department.textContent = Datajson[i].Department;
-        Department.className = "badge bg-info rounded-pill";
+        Department.className = "badge badge-outline-primary rounded-pill";
         Link.appendChild(Name);
         Link.appendChild(Department);
         obj.appendChild(Link);
@@ -55,4 +57,8 @@ function filterText(key, OriginData){
             return false;
         }
     })
+}
+click.onclick = function (){
+    var text = location.href;
+    window.clipboardData.setData("Text", text);  
 }

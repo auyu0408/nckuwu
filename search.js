@@ -26,7 +26,7 @@ function showDatas(Datajson){
         Name.textContent = Datajson[i].Name;
         Name.className = "me-auto";
         Department.textContent = Datajson[i].Department;
-        Department.className = "badge bg-info rounded-pill";
+        Department.className = "badge badge-outline-primary rounded-pill";
         Link.appendChild(Name);
         Link.appendChild(Department);
         list.appendChild(Link);
