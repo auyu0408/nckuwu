@@ -16,6 +16,7 @@ function showDetail(Datajson){
     var Year_sem = document.createElement('h5');
     var Name = document.createElement('p');
     var File = document.createElement('div');
+    var Download = document.createElement('a');
     Body.className = "card-body";
     Co_no.innerHTML = Datajson[0].Co_no;
     Year_sem.innerHTML = "開課學年: " + Datajson[0].Year_sem;
@@ -25,16 +26,23 @@ function showDetail(Datajson){
     
     for (j=0; j<All_file.length; j++){
         var smol_file = document.createElement('a');
-        smol_file.href = "https://github.com/auyu0408/schoolWorks/tree/main/" + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/";
         smol_file.innerHTML = All_file[j];
+        smol_file.href = "https://raw.githubusercontent.com/auyu0408/schoolWorks/main/" + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num + "/" + All_file[j];
         smol_file.style = "text-decoration:none;"
         smol_file.className = "col-3 m-2 btn btn-light";
+        smol_file.target = "_blank";
         File.appendChild(smol_file);
     }
+    Download.href = "https://download-directory.github.io/?url=https://github.com/auyu0408/schoolWorks/tree/master/" + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num;
+    Download.innerHTML = "Download Zip";
+    Download.style = "text-decoration:none;"
+    Download.className = "col-3 m-2 btn btn-primary";
+    Download.target = "_blank";
     Body.appendChild(Co_no);
     Body.appendChild(Year_sem);
     Body.appendChild(Name);
     Body.appendChild(File);
+    Body.appendChild(Download)
     card.appendChild(Body)
 }
 function Separate(url){
