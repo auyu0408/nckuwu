@@ -1,6 +1,5 @@
 var ul = document.querySelector('ul');
 var oinput = document.getElementById('q');
-var click = document.getElementById('share');
 var url = location.search;
 var requestURL = "file_simulate/index_example.json";
 var request = new XMLHttpRequest();
@@ -57,8 +56,4 @@ function filterText(key, OriginData){
             return false;
         }
     })
-}
-click.onclick = function (){
-    var text = location.href;
-    window.clipboardData.setData("Text", text);  
 }
