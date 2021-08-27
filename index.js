@@ -13,11 +13,10 @@ request.onload = function(){
     if (url === ""){
     }else{
         var key = url.split("=");
-        
         key[1] = decodeURIComponent(key[1]);
         Data = filterText(key[1], Data);
-        showDatas(Data, ul);
     }
+    showDatas(Data, ul);
 }
 oinput.oninput=function(){
     var Origin = request.response;
