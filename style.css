@@ -1,3 +1,10 @@
+.body {
+  height: 100%;
+  background-image: url('pic/bg.png'); 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
 .btn-primary {
     color: #fff;
     background-color: #733830;
