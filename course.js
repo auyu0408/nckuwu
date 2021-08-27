@@ -1,16 +1,36 @@
+var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+
 var card = document.getElementById('card');
 var title = document.getElementById('Co_no');
 var url = location.search;
-var temp = url.split("=");
-var requestURL = "file_simulate/" + temp[1] + "/" + "course.json";
+var temp;
+try{
+    temp = url.split("=");
+    if (temp[0] != "?co_no"){
+        throw "Wrong url.";
+    }
+}
+catch(e){
+    Error_message(e);
+}
+
+var requestURL = file_raw + temp[1] + "/" + "course.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
 request.send();
 request.onload = function(){
-    var Data = request.response;
-    ShowCourse(Data);
-    showDetail(Data);
+    try{
+        var Data = request.response;
+        if (request.status === 404){
+            throw "File not found.";
+        }
+        ShowCourse(Data);
+        showDetail(Data);
+    }
+    catch(e){
+        Error_message(e);
+    }
 }
 function ShowCourse(Datajson){
     var Course = document.createElement('h3');
@@ -51,4 +71,12 @@ function showDetail(Datajson){
         Col.appendChild(Card);   
         card.appendChild(Col)
     }
+}
+
+function Error_message(msg){
+    var message = document.createElement('h4');
+    message.className = "text-center";
+    message.style= "color: #733830;";
+    message.innerHTML = msg;
+    card.appendChild(message);
 }

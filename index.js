@@ -1,21 +1,23 @@
+var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+
 var ul = document.querySelector('ul');
 var oinput = document.getElementById('q');
 var url = location.search;
-var requestURL = "file_simulate/index_example.json";
+var requestURL = file_raw + "/index_example.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
 request.send();
 request.onload = function(){
     var Data = request.response;
-    if (url === "")
-    {
+    if (url === ""){
     }else{
         var key = url.split("=");
+        
         key[1] = decodeURIComponent(key[1]);
         Data = filterText(key[1], Data);
+        showDatas(Data, ul);
     }
-    showDatas(Data, ul);
 }
 oinput.oninput=function(){
     var Origin = request.response;

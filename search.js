@@ -1,6 +1,8 @@
+var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+
 var oinput = document.getElementById('q');
 var list = document.getElementById('list');
-var URL = "file_simulate/index_example.json";
+var URL = file_raw + "index_example.json";
 var search_request = new XMLHttpRequest();
 search_request.open('GET', URL);
 search_request.responseType = 'json';
@@ -15,6 +17,7 @@ oinput.oninput=function(){
         showDatas(newData);
     }
 }
+
 function showDatas(Datajson){
     list.innerHTML = '';
     for (i=0; i<Datajson.length; i++){
@@ -32,6 +35,7 @@ function showDatas(Datajson){
         list.appendChild(Link);
     }
 }
+
 function filterText(key, OriginData){
     return OriginData.filter(function(elem, index){
         if (elem.Co_no.indexOf(key)!=-1){

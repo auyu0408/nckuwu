@@ -1,17 +1,39 @@
+var raw_remote = "https://raw.githubusercontent.com/Darkborderman/schoolWorks/develop/api/static/"
+var remote = "https://download-directory.github.io/?url=https://github.com/"
+var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+var last_href = "course.html?co_no=";
+
 var card = document.getElementById('card');
 var last = document.getElementById('last');
 var url = location.search;
-var file_temp = Separate(url);
-var requestURL = "file_simulate/" + file_temp.co_no + "/" + file_temp.year + "/data.json";
+var file_temp 
+try{
+    file_temp = Separate(url);
+}
+catch(e){
+    Error_message(e);
+}
+
+var requestURL = file_raw + file_temp.co_no + "/" + file_temp.year + "/data.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
 request.send();
 request.onload = function(){
-    var Data = request.response;
-    Lastlink(Data[0].Co_no);
-    showDetail(Data);
+    try{
+        var Data = request.response;
+        if (request.status === 404){
+            throw "File not found.";
+        }
+        Lastlink(last_href+ Data[0].Co_no);
+        showDetail(Data);
+    }
+    catch(e){
+        Error_message(e);
+        Lastlink("index.html");
+    }
 }
+
 function showDetail(Datajson){
     var Body = document.createElement('div');
     var Co_no = document.createElement('h4');
@@ -32,13 +54,13 @@ function showDetail(Datajson){
     for (j=0; j<All_file.length; j++){
         var smol_file = document.createElement('a');
         smol_file.innerHTML = All_file[j];
-        smol_file.href = "https://raw.githubusercontent.com/auyu0408/schoolWorks/main/" + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num + "/" + All_file[j];
+        smol_file.href = raw_remote + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num + "/" + All_file[j];
         smol_file.style = "text-decoration:none;"
         smol_file.className = "col-3 m-2 btn btn-light fw-bold";
         smol_file.target = "_blank";
         File.appendChild(smol_file);
     }
-    Download.href = "https://download-directory.github.io/?url=https://github.com/auyu0408/schoolWorks/tree/master/" + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num;
+    Download.href = remote + Datajson[0].Co_no + "/" + Datajson[0].Year_sem + "/" + file_temp.class_num;
     Download.innerHTML = "Download Zip";
     Download.style = "text-decoration:none;"
     Download.className = "col-3 m-2 btn btn-outline-light fw-bold";
@@ -50,18 +72,34 @@ function showDetail(Datajson){
     Body.appendChild(Download)
     card.appendChild(Body)
 }
+
 function Separate(url){
     var temp1 = url.split("=");
+    if (temp1[0] != "?co_no"){
+        throw "Wrong url.";
+    }
     var temp2 = temp1[1].split("&");
+    if (temp2[1] != "year_sem"){
+        throw "Wrong url.";
+    }
     var temp3 = temp1[2].split("/");
     var file_name = {'co_no': temp2[0], 'year': temp3[0], 'class_num': temp3[1]};
     return file_name;
 }
+
 function Lastlink(text){
     var a = document.createElement('a');
-    a.href = "course.html?co_no=" + text;
+    a.href = text
     a.className = "fs-6";
     a.style = "color: #e3a576; text-decoration:none;";
     a.innerHTML = '<img src="pic/back.svg" width="40" height="40">' + '<br>' + "回上一頁";
     last.appendChild(a);
+}
+
+function Error_message(msg){
+    var message = document.createElement('h4');
+    message.className = "text-center";
+    message.style= "color: #733830;";
+    message.innerHTML = msg;
+    card.appendChild(message);
 }
