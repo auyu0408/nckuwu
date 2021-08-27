@@ -1,7 +1,5 @@
 [
-    {"Co_no":"F720900",
-    "Department":"資訊系",
-    "Course":[
+    {"Course":[
         {
             "Name":"數位系統導論",
             "Class_code":["0"],

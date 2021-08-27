@@ -3,7 +3,7 @@ var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file
 var ul = document.querySelector('ul');
 var oinput = document.getElementById('q');
 var url = location.search;
-var requestURL = file_raw + "/index_example.json";
+var requestURL = file_raw + "index_example.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';

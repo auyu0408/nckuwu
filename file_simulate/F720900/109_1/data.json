@@ -1,10 +1,7 @@
 [
-    {"Co_no":"F720900",
-    "Department":"資訊系",
+    {
     "Name":"數位系統導論",
     "Class_code":["0"],
-    "Year_sem":"109_1",
-    "Teacher":"陳培殷",
     "file":[
         ["CH0.pdf", "CH1.pdf", "CH2.pdf", "CH3.pdf", "CH4.pdf", "CH5.pdf", "CH5_2.pdf", "CH6.pdf",
         "CH7.pdf", "CH8.pdf", "CH9.pdf", "final_sol.pdf", "mid1_1.jpg", "mid1_2.jpg", "mid1_sol.pdf", "mid2_sol.pdf", "supplement1.pdf", "supplement2.pdf"]
