@@ -5,6 +5,14 @@
   background-attachment: fixed;
   background-size: cover;
 }
+#middle {
+  padding-top: 60px;
+}
+#side {
+  position: fixed;
+  padding-top: 0px;
+  right: 17px;
+}
 .btn-primary {
     color: #fff;
     background-color: #733830;

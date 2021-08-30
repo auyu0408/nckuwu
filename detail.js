@@ -1,12 +1,11 @@
 var raw_remote = "https://raw.githubusercontent.com/Darkborderman/schoolWorks/develop/api/static/"
-var remote = "https://download-directory.github.io/?url=https://github.com/"
-var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+var remote = "https://download-directory.github.io/?url=https://github.com/Darkborderman/schoolWorks/tree/develop/api/static/"
 var last_href = "course.html?co_no=";
 
 //search bar
 var oinput = document.getElementById('q');
 var list = document.getElementById('list');
-var searchURL = "file_simulate/index_example.json";
+var searchURL = raw_remote + "index.json";
 var search_request = new XMLHttpRequest();
 search_request.open('GET', searchURL);
 search_request.responseType = 'json';
@@ -34,7 +33,7 @@ catch(e){
     Error_message(e);
 }
 
-var requestURL = "file_simulate/" + file_temp.co_no + "/" + file_temp.year + "/data.json";
+var requestURL = raw_remote + file_temp.co_no + "/" + file_temp.year + "/" + file_temp.class_num + "/data.json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
@@ -47,7 +46,7 @@ request.onload = function(){
             throw "File not found.";
         }
         var infoD = filterText(file_temp.co_no, indexD);
-        Lastlink(last_href+ infoD[0].Co_no);
+        Lastlink(last_href+ infoD[0].course_id);
         showDetail(Data, infoD);
     }
     catch(e){
@@ -64,25 +63,26 @@ function showDetail(Datajson, infoData){
     var File = document.createElement('div');
     var Download = document.createElement('a');
     Body.className = "card-body";
-    Co_no.innerHTML = infoData[0].Co_no;
+    Co_no.innerHTML = infoData[0].course_id;
     Co_no.style = "color: #733830;";
-    Year_sem.innerHTML = "開課學年: " + infoData[0].Year_sem;
+    Year_sem.innerHTML = "開課學年: " + infoData[0].year + "_" + infoData[0].semester;
     Year_sem.style = "color: #733830;";
-    Name.innerHTML = "課程名稱: " + infoData[0].Name + '<br>' + "授課教師: " + infoData[0].Teacher + '<br>'+ "開課系所: " + infoData[0].Department;
+    Name.innerHTML = "課程名稱: " + infoData[0].course_id + '<br>' + "授課教師: " + infoData[0].instructor + '<br>'+ "開課系所: " + infoData[0].department;
     Name.style = "color: #916d5d;";
     File.className = "d-md-block";
-    var All_file = Datajson[file_temp.class_num].file;
+    var All_file = Datajson.files;
+    All_file = All_file.sort();
     
     for (j=0; j<All_file.length; j++){
         var smol_file = document.createElement('a');
         smol_file.innerHTML = All_file[j];
-        smol_file.href = raw_remote + infoData[0].co_no + "/" + file_temp.year + "/" + file_temp.class_num + "/" + All_file[j];
+        smol_file.href = raw_remote + infoData[0].course_id + "/" + file_temp.year + "/" + file_temp.class_num + "/" + All_file[j];
         smol_file.style = "text-decoration:none;"
         smol_file.className = "col-3 m-2 btn btn-light fw-bold";
         smol_file.target = "_blank";
         File.appendChild(smol_file);
     }
-    Download.href = remote + infoData[0].co_no + "/" + file_temp.year + "/" + file_temp.class_num;
+    Download.href = remote + infoData[0].course_id + "/" + file_temp.year + "/" + file_temp.class_num;
     Download.innerHTML = "Download Zip";
     Download.style = "text-decoration:none;"
     Download.className = "col-3 m-2 btn btn-outline-light fw-bold";
@@ -97,19 +97,27 @@ function showDetail(Datajson, infoData){
 
 function showBars(Datajson){
     list.innerHTML = '';
+    Datajson = Datajson.sort(function(a,b){
+        return a.course_id > b.course_id;
+    });
+    var temp = "";
     for (i=0; i<Datajson.length; i++){
+        if (temp.course_id === Datajson[i].course_id){
+            continue;
+        }
         var Link = document.createElement('a');
         var Name = document.createElement('div');
         var Department = document.createElement('span');
-        Link.href = "course.html?co_no=" +Datajson[i].Co_no;
+        Link.href = "course.html?co_no=" +Datajson[i].course_id;
         Link.className = "list-group-item d-flex list-group-item-action";
-        Name.textContent = Datajson[i].Name;
+        Name.textContent = Datajson[i].course_id;
         Name.className = "me-auto";
-        Department.textContent = Datajson[i].Department;
+        Department.textContent = Datajson[i].department;
         Department.className = "badge badge-outline-primary rounded-pill";
         Link.appendChild(Name);
         Link.appendChild(Department);
         list.appendChild(Link);
+        temp = Datajson[i];
     }
 }
 
@@ -138,13 +146,7 @@ function Lastlink(text){
 
 function filterText(key, OriginData){
     return OriginData.filter(function(elem, index){
-        if (elem.Co_no.indexOf(key)!=-1){
-            return true;
-        }
-        else if(elem.Department.indexOf(key)!=-1){
-            return true;
-        }
-        else if(elem.Name.indexOf(key)!=-1){
+        if (elem.course_id.indexOf(key)!=-1){
             return true;
         }
         else{

@@ -1,9 +1,9 @@
-var file_raw = "https://raw.githubusercontent.com/auyu0408/fire_bone/master/file_simulate/"
+var file_raw = "https://raw.githubusercontent.com/Darkborderman/schoolWorks/develop/api/static/"
 
 //bar search
 var oinput = document.getElementById('q');
 var list = document.getElementById('list');
-var searchURL = "file_simulate/index_example.json";
+var searchURL = file_raw + "index.json";
 var search_request = new XMLHttpRequest();
 search_request.open('GET', searchURL);
 search_request.responseType = 'json';
@@ -48,39 +48,36 @@ search_request.onload = function(){
 }
 function ShowCourse(Datajson){
     var Course = document.createElement('h3');
-    Course.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].Co_no;
+    Course.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].course_id + "-" + Datajson[0].course_id;
     Course.className = "fw-bold";
     Course.style = "color: #c1535c;";
     title.appendChild(Course);
 }
 function showDetail(infoD){
-    var Detail = infoD[0].Detail;
-    for (i=0; i<Detail.length; i++){
+    infoD = infoD.sort(function(a,b){
+        return b.year - a.year;
+    });
+    for (i=0; i<infoD.length; i++){
         var Col = document.createElement('div');
         var Card = document.createElement('div');
         var Body = document.createElement('div');
         var Title = document.createElement('h5');
         var Teacher = document.createElement('p');
-        var Class = document.createElement('p');
-        Col.className = "col";
-        Card.className = "card";
+        var smol_class = document.createElement('a');
+        Col.className = "col-6";
+        Card.className = "card m-1";
         Body.className = "card-body";
         Title.className = "card-title";
-        Title.innerHTML = "開課學年: " + Detail[i].Year_sem;
+        Title.innerHTML = "開課學年: " + infoD[i].year + "-" + infoD[i].semester;
         Title.style = "color: #733830;";
-        Teacher.innerHTML = "課程名稱: " + infoD[0].Name + '<br>' + "授課教師: " + Detail[i].Teacher;
+        Teacher.innerHTML = "課程名稱: " + infoD[0].course_id + '<br>' + "授課教師: " + infoD[i].instructor;
         Teacher.style = "color: #733830;";
-        var Class_code = Detail[i].Class_code;
-        for (j=0; j<Class_code.length; j++){
-            var smol_class = document.createElement('a');
-            smol_class.href = "detail.html?co_no=" + infoD[0].Co_no + "&year_sem=" + Detail[i].Year_sem + "/" + Class_code[j];
-            smol_class.innerHTML = "分班: " + Class_code[j] + ' &nbsp;';
-            smol_class.style = "text-decoration:none; color: #43afb1;"
-            Class.appendChild(smol_class);
-        }
+        smol_class.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "/" + infoD[i].class_code;
+        smol_class.innerHTML = "分班碼: " + infoD[i].class_code + ' &nbsp;';
+        smol_class.style = "text-decoration:none; color: #43afb1;"
         Body.appendChild(Title);
         Body.appendChild(Teacher);
-        Body.appendChild(Class);
+        Body.appendChild(smol_class);
         Card.appendChild(Body);
         Col.appendChild(Card);   
         card.appendChild(Col)
@@ -89,31 +86,34 @@ function showDetail(infoD){
 
 function showBars(Datajson){
     list.innerHTML = '';
+    Datajson = Datajson.sort(function(a,b){
+        return a.course_id > b.course_id;
+    });
+    var temp = "";
     for (i=0; i<Datajson.length; i++){
+        if (temp.course_id === Datajson[i].course_id){
+            continue;
+        }
         var Link = document.createElement('a');
         var Name = document.createElement('div');
         var Department = document.createElement('span');
-        Link.href = "course.html?co_no=" +Datajson[i].Co_no;
+        Link.href = "course.html?co_no=" +Datajson[i].course_id;
         Link.className = "list-group-item d-flex list-group-item-action";
-        Name.textContent = Datajson[i].Name;
+        Name.textContent = Datajson[i].course_id;
         Name.className = "me-auto";
-        Department.textContent = Datajson[i].Department;
+        str = Datajson[i].department;
+        Department.textContent = str ? str.substr(0,3) : str ;
         Department.className = "badge badge-outline-primary rounded-pill";
         Link.appendChild(Name);
         Link.appendChild(Department);
         list.appendChild(Link);
+        temp = Datajson[i];
     }
 }
 
 function filterText(key, OriginData){
     return OriginData.filter(function(elem, index){
-        if (elem.Co_no.indexOf(key)!=-1){
-            return true;
-        }
-        else if(elem.Department.indexOf(key)!=-1){
-            return true;
-        }
-        else if(elem.Name.indexOf(key)!=-1){
+        if (elem.course_id.indexOf(key)!=-1){
             return true;
         }
         else{

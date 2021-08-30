@@ -12,31 +12,27 @@
     <title>NCKUwU・成大考古平台</title>
 </head>
 <body class="body">
-    <nav class="navbar navbar-light shadow" style="background-color: #f3ddb6;">
+    <nav class="navbar navbar-light shadow fixed-top" style="background-color: #f3ddb6;">
         <div class="container-fluid">
             <div class="col-1"></div>
             <div class="col-2 text-center">
                 <a href="index.html" class="navbar-brand align-middle fs-3 fw-bold" style="color: #c1535c;">NCKUwU</a>
             </div>
             <div class="col-6">
+                <a href="https://github.com/Darkborderman/schoolWorks/tree/develop" target = "_blank" style="text-decoration:none;"><img src="pic/github.svg" width="30" height="30">&nbsp</a>
+            </div>
+            <div class="col-3">
                 <form class="d-flex" action="index.html">
                     <input class="form-control light-table-filter" type="search" id="q" name="q" placeholder="Keyword">
                     <button type="submit" class="btn btn-outline-primary">Search</button>
                 </form>
             </div>
-            <div class="col-2 text-end">
-                <a href="https://github.com/Darkborderman/schoolWorks/tree/develop" target = "_blank"><img src="pic/github.svg" width="30" height="30"></a>
-            </div>
-            <div class="col-1"></div>
         </div>
     </nav>
-    <div class="container col-6">
-        <div class="list-group box-shadow" id="list"></div>
-    </div>
-    <br>
-    <div class="row">
+    <div class="row container-fluid" id="middle">
         <div class="col-1"></div>
         <div class="col-2 text-center">
+            <br>
             <p>
                 <a href="index.html" class="fs-6" style="color: #e3a576; text-decoration:none;">
                     <img src="pic/back.svg" width="40" height="40">
@@ -59,11 +55,14 @@
                 </a>
             </p>
         </div>
-        <div class="container col-6">
+        <div class="col-6">
+            <br>
             <div id="Co_no" class="zzalign-middle"></div>
             <div class="row col" id="card"></div>
         </div>
-        <div class="col-3"></div>
+        <div class="col-3" id="side">
+            <div class="list-group box-shadow" id="list"></div>
+        </div>
     </div>
     <script src="course.js"></script>
 </body>
