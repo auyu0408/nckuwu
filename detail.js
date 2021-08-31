@@ -16,7 +16,7 @@ oinput.oninput=function(){
     if (text == ''){
         list.innerHTML = '';
     }else{
-        var newData = filterText(text, indexD);
+        var newData = filterText(text.toUpperCase(), indexD);
         showBars(newData);
     }
 }

@@ -14,7 +14,7 @@ oinput.oninput=function(){
     if (text == ''){
         list.innerHTML = '';
     }else{
-        var newData = filterText(text, indexD);
+        var newData = filterText(text.toUpperCase(), indexD);
         showBars(newData);
     }
 }
@@ -63,25 +63,23 @@ function ShowCourse(Datajson){
 function showDetail(infoD){
     for (i=0; i<infoD.length; i++){
         var Col = document.createElement('div');
-        var Card = document.createElement('div');
+        var Card = document.createElement('a');
         var Body = document.createElement('div');
         var Title = document.createElement('h5');
-        var Teacher = document.createElement('p');
-        var smol_class = document.createElement('a');
+        var Detail = document.createElement('p');
         Col.className = "col-6";
-        Card.className = "card m-1";
+        Card.className = "card m-1 list-group-item-action";
+        Card.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "/" + infoD[i].class_code;
         Body.className = "card-body";
         Title.className = "card-title";
         Title.innerHTML = "開課學年: " + infoD[i].year + "-" + infoD[i].semester;
         Title.style = "color: #733830;";
-        Teacher.innerHTML = "課程碼: " + infoD[0].course_id + '<br>' + "開課系所: " + infoD[0].department.substr(0,3) + '<br>' + "授課教師: " + infoD[i].instructor;
-        Teacher.style = "color: #733830;";
-        smol_class.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "/" + infoD[i].class_code;
-        smol_class.innerHTML = "分班碼: " + infoD[i].class_code + ' &nbsp;';
-        smol_class.style = "text-decoration:none; color: #43afb1;"
+        Detail.innerHTML = "課程碼: " + infoD[0].course_id + '<br>' + "開課系所: " + infoD[0].department.substr(0,3) 
+        + '<br>' + "授課教師: " + infoD[i].instructor + '<br>' + "班級" + infoD[i].class_code + ' &nbsp;';
+        Detail.style = "color: #733830;";
+        Card.style = "text-decoration:none;"
         Body.appendChild(Title);
-        Body.appendChild(Teacher);
-        Body.appendChild(smol_class);
+        Body.appendChild(Detail);
         Card.appendChild(Body);
         Col.appendChild(Card);   
         card.appendChild(Col)

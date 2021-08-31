@@ -15,8 +15,14 @@ request.onload = function(){
     }else{
         var key = url.split("=");
         key[1] = decodeURIComponent(key[1]);
-        Data = filterText(key[1], Data);
+        Data = filterText(key[1].toUpperCase(), Data);
     }
+    Data = Data.sort(function(a,b){
+        if (a.course_id === b.course_id){
+            return a.year > b.year
+        }
+        return a.course_id > b.course_id;
+    });
     showDatas(Data);
 }
 oinput.oninput=function(){
@@ -25,14 +31,11 @@ oinput.oninput=function(){
     if (text == ''){
         list.innerHTML = '';
     }else{
-        var newData = filterText(text, Origin);
+        var newData = filterText(text.toUpperCase(), Origin);
         showBars(newData);
     }
 }
 function showDatas(Datajson){
-    Datajson = Datajson.sort(function(a,b){
-        return a.course_id > b.course_id;
-    });
     var temp = "";
     for (i=0; i<Datajson.length; i++){
         if (temp.course_id === Datajson[i].course_id){
