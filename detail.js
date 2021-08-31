@@ -33,7 +33,7 @@ catch(e){
     Error_message(e);
 }
 
-var requestURL = raw_remote + file_temp.co_no + "/" + file_temp.year + "/" + file_temp.class_num + "/data.json";
+var requestURL = raw_remote + file_temp.co_no + "/" + file_temp.year + "/" + file_temp.class_num + ".json";
 var request = new XMLHttpRequest();
 request.open('GET', requestURL);
 request.responseType = 'json';
@@ -46,6 +46,9 @@ request.onload = function(){
             throw "File not found.";
         }
         var infoD = filterText(file_temp.co_no, indexD);
+        infoD = infoD.sort(function(a,b){
+            return b.year - a.year;
+        });
         Lastlink(last_href+ infoD[0].course_id);
         showDetail(Data, infoD);
     }
@@ -57,17 +60,21 @@ request.onload = function(){
 
 function showDetail(Datajson, infoData){
     var Body = document.createElement('div');
-    var Co_no = document.createElement('h4');
+    var Co_name = document.createElement('h4');
+    var Eng = document.createElement('h5');
     var Year_sem = document.createElement('h5');
     var Name = document.createElement('p');
     var File = document.createElement('div');
     var Download = document.createElement('a');
     Body.className = "card-body";
-    Co_no.innerHTML = infoData[0].course_id;
-    Co_no.style = "color: #733830;";
-    Year_sem.innerHTML = "開課學年: " + infoData[0].year + "_" + infoData[0].semester;
+    Co_name.innerHTML = infoData[0].course_name.split(" ")[0];
+    Co_name.style = "color: #733830;";
+    Eng.innerHTML = infoData[0].course_name.replace(infoData[0].course_name.split(" ")[0],"");
+    Eng.style = "color: #733830;";
+    Year_sem.innerHTML = "開課學年: " + infoData[0].year + "-" + infoData[0].semester;
     Year_sem.style = "color: #733830;";
-    Name.innerHTML = "課程名稱: " + infoData[0].course_id + '<br>' + "授課教師: " + infoData[0].instructor + '<br>'+ "開課系所: " + infoData[0].department;
+    Name.innerHTML = "課程碼: " + infoData[0].course_id + '<br>' + "分班碼:" +
+    file_temp.class_num + '<br>'+ "授課教師: " + infoData[0].instructor + '<br>' + "開課系所: " + infoData[0].department;
     Name.style = "color: #916d5d;";
     File.className = "d-md-block";
     var All_file = Datajson.files;
@@ -78,21 +85,22 @@ function showDetail(Datajson, infoData){
         smol_file.innerHTML = All_file[j];
         smol_file.href = raw_remote + infoData[0].course_id + "/" + file_temp.year + "/" + file_temp.class_num + "/" + All_file[j];
         smol_file.style = "text-decoration:none;"
-        smol_file.className = "col-3 m-2 btn btn-light fw-bold";
+        smol_file.className = "col-5 m-2 btn btn-light fw-bold";
         smol_file.target = "_blank";
         File.appendChild(smol_file);
     }
     Download.href = remote + infoData[0].course_id + "/" + file_temp.year + "/" + file_temp.class_num;
     Download.innerHTML = "Download Zip";
     Download.style = "text-decoration:none;"
-    Download.className = "col-3 m-2 btn btn-outline-light fw-bold";
+    Download.className = "col-5 m-2 btn btn-outline-light fw-bold";
     Download.target = "_blank";
-    Body.appendChild(Co_no);
+    Body.appendChild(Co_name);
+    Body.appendChild(Eng);
     Body.appendChild(Year_sem);
     Body.appendChild(Name);
+    Body.appendChild(Download);
     Body.appendChild(File);
-    Body.appendChild(Download)
-    card.appendChild(Body)
+    card.appendChild(Body);
 }
 
 function showBars(Datajson){
@@ -110,10 +118,12 @@ function showBars(Datajson){
         var Department = document.createElement('span');
         Link.href = "course.html?co_no=" +Datajson[i].course_id;
         Link.className = "list-group-item d-flex list-group-item-action";
-        Name.textContent = Datajson[i].course_id;
+        Name.textContent = Datajson[i].course_name.split(" ")[0];
         Name.className = "me-auto";
-        Department.textContent = Datajson[i].department;
-        Department.className = "badge badge-outline-primary rounded-pill";
+        Name.style = "color: #733830;"
+        Department.textContent = Datajson[i].department.substr(0,3);
+        Department.className = "badge rounded-pill badge-outline-primary";
+        Department.style = "badge-padding-y: .35em;"
         Link.appendChild(Name);
         Link.appendChild(Department);
         list.appendChild(Link);
@@ -148,6 +158,21 @@ function filterText(key, OriginData){
     return OriginData.filter(function(elem, index){
         if (elem.course_id.indexOf(key)!=-1){
             return true;
+        }
+        if (elem.course_name){
+            if (elem.course_name.indexOf(key)!=-1){
+                return true
+            }
+        }
+        if (elem.department){
+            if(elem.department.indexOf(key)!=-1){
+                return true
+            }
+        }
+        if (elem.instructor){
+            if(elem.instructor.indexOf(key)!=-1){
+                return true
+            }
         }
         else{
             return false;
