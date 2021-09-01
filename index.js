@@ -14,8 +14,10 @@ request.onload = function(){
     if (url === ""){
     }else{
         var key = url.split("=");
-        key[1] = decodeURIComponent(key[1]);
-        Data = filterText(key[1].toUpperCase(), Data);
+        if (key[0] === "?q"){
+            key[1] = decodeURIComponent(key[1]);
+            Data = filterText(key[1].toUpperCase(), Data);
+        }
     }
     Data = Data.sort(function(a,b){
         if (a.course_id === b.course_id){

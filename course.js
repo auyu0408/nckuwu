@@ -28,6 +28,7 @@ try{
     if (temp[0] != "?co_no"){
         throw "Wrong url.";
     }
+    temp1 = temp[1].split("&");
 }
 catch(e){
     Error_message(e);
@@ -35,7 +36,7 @@ catch(e){
 search_request.onload = function(){
     try{
         var indexD = search_request.response;
-        infoD = filterText(temp[1], indexD);
+        infoD = filterText(temp1[0], indexD);
         if (infoD === ""){
             throw "File not found.";
         }
@@ -69,7 +70,7 @@ function showDetail(infoD){
         var Detail = document.createElement('p');
         Col.className = "col-6";
         Card.className = "card m-1 list-group-item-action";
-        Card.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "/" + infoD[i].class_code;
+        Card.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "&class_co=" + infoD[i].class_code;
         Body.className = "card-body";
         Title.className = "card-title";
         Title.innerHTML = "開課學年: " + infoD[i].year + "-" + infoD[i].semester;

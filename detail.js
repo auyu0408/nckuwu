@@ -140,8 +140,12 @@ function Separate(url){
     if (temp2[1] != "year_sem"){
         throw "Wrong url.";
     }
-    var temp3 = temp1[2].split("/");
-    var file_name = {'co_no': temp2[0], 'year': temp3[0], 'class_num': temp3[1]};
+    var temp3 = temp1[2].split("&");
+    if (temp3[1] != "class_co"){
+        throw "Wrong url.";
+    }
+    var temp4 = temp1[3].split("&");
+    var file_name = {'co_no': temp2[0], 'year': temp3[0], 'class_num': temp4[0]};
     return file_name;
 }
 
