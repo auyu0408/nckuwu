@@ -48,7 +48,7 @@ function showDatas(Datajson){
         var Department = document.createElement('span');
         Link.href = "course.html?co_no=" +Datajson[i].course_id;
         Link.className = "list-group-item d-flex list-group-item-action";
-        Name.textContent = Datajson[i].course_name;
+        Name.textContent = Datajson[i].course_name.split(" ")[0];
         Name.className = "me-auto";
         Name.style = "color: #733830;"
         str = Datajson[i].department;
