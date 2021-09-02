@@ -55,7 +55,7 @@ function ShowCourse(Datajson){
     var Eng = document.createElement('h5');
     Course.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].course_name.split(" ")[0];
     Course.className = "fw-bold";
-    Course.style = "color: #c1535c;";
+    Course.style = "color: #b5424f;";
     Eng.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].course_name.replace(Datajson[0].course_name.split(" ")[0],"");
     Eng.style = "color: #c1535c;";
     title.appendChild(Course);
@@ -69,7 +69,7 @@ function showDetail(infoD){
         var Title = document.createElement('h5');
         var Detail = document.createElement('p');
         Col.className = "col-6";
-        Card.className = "card m-1 list-group-item-action";
+        Card.className = "card m-1 list-group-item-action shadow";
         Card.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "&class_co=" + infoD[i].class_code;
         Body.className = "card-body";
         Title.className = "card-title";
@@ -93,6 +93,8 @@ function showBars(Datajson){
         return a.course_id > b.course_id;
     });
     var temp = "";
+    var select = document.createElement('div');
+    select.className = "list-group";
     for (i=0; i<Datajson.length; i++){
         if (temp.course_id === Datajson[i].course_id){
             continue;
@@ -102,16 +104,17 @@ function showBars(Datajson){
         var Department = document.createElement('span');
         Link.href = "course.html?co_no=" +Datajson[i].course_id;
         Link.className = "list-group-item d-flex list-group-item-action";
-        Name.textContent = Datajson[i].course_name.split(" ")[0];
+        Name.innerHTML = '&nbsp' + Datajson[i].course_name.split(" ")[0];
         Name.className = "me-auto";
         Name.style = "color: #733830;"
-        Department.textContent = Datajson[i].department.substr(0,3) ;
-        Department.className = "badge badge-outline-primary rounded-pill";
-        Link.appendChild(Name);
+        Department.innerHTML = Datajson[i].department.substr(0,3);
+        Department.className = "badge rounded-pill badge-outline-primary";
         Link.appendChild(Department);
-        list.appendChild(Link);
+        Link.appendChild(Name);
+        select.appendChild(Link);
         temp = Datajson[i];
     }
+    list.appendChild(select);
 }
 
 function filterText(key, OriginData){
