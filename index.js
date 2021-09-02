@@ -41,7 +41,7 @@ function showDatas(Datajson){
     var temp = "";
     var select = document.createElement('div');
     select.style = "height: 450px; width:100%; overflow:hidden; overflow-y:scroll;"
-    select.className = "form-select list-group list-group-flush";
+    select.className = "list-group list-group-flush";
     for (i=0; i<Datajson.length; i++){
         if (temp.course_id === Datajson[i].course_id){
             continue;
