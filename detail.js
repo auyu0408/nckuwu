@@ -67,7 +67,7 @@ function showDetail(Datajson, infoData){
     var File = document.createElement('div');
     var Download = document.createElement('a');
     Body.className = "card-body";
-    Body.style = "max-height: 500px; width:100%; overflow:scroll; overflow-y:scroll;"
+    Body.style = "max-height: 450px; width:100%; overflow:scroll; overflow-y:scroll;"
     Co_name.innerHTML = infoData[0].course_name.split(" ")[0];
     Co_name.style = "color: #733830;";
     Eng.innerHTML = infoData[0].course_name.replace(infoData[0].course_name.split(" ")[0],"");
