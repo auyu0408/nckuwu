@@ -1,28 +1,23 @@
-var file_raw = "https://raw.githubusercontent.com/Darkborderman/schoolWorks/develop/api/static/"
+var endpoint = "https://raw.githubusercontent.com/Darkborderman/schoolWorks/develop/api/static/index.json"
 
-//bar search
-var oinput = document.getElementById('q');
+var input_bar = document.getElementById('q');
 var list = document.getElementById('list');
-var searchURL = file_raw + "index.json";
-var search_request = new XMLHttpRequest();
-search_request.open('GET', searchURL);
-search_request.responseType = 'json';
-search_request.send();
-oinput.oninput=function(){
-    var indexD = search_request.response;
-    text = this.value;
-    if (text == ''){
-        list.innerHTML = '';
-    }else{
-        var newData = filterText(text.toUpperCase(), indexD);
-        showBars(newData);
-    }
-}
-
+var index_data, temp;
 var card = document.getElementById('card');
 var title = document.getElementById('Co_no');
 var url = location.search;
-var temp;
+
+$.ajax({
+    url: endpoint,
+    method: "GET",
+    dataType: "json",
+    success: function(response){
+        index_data = response;
+        search_course();
+    },
+    error: function(err){error_message(err)},
+});
+
 try{
     temp = url.split("=");
     if (temp[0] != "?co_no"){
@@ -31,38 +26,50 @@ try{
     temp1 = temp[1].split("&");
 }
 catch(e){
-    Error_message(e);
+    error_message(e);
 }
-search_request.onload = function(){
+
+input_bar.oninput=function(){
+    text = this.value;
+    if (text == ''){
+        list.innerHTML = '';
+    }else{
+        var new_data = filter_text(text.toUpperCase(), index_data);
+        show_bar(new_data);
+    }
+}
+
+function search_course(){
     try{
-        var indexD = search_request.response;
-        infoD = filterText(temp1[0], indexD);
-        if (infoD === ""){
+        info = filter_text(temp1[0], index_data);
+        if (info == ''){
             throw "File not found.";
         }
-        infoD = infoD.sort(function(a,b){
+        info = info.sort(function(a,b){
             return b.year - a.year;
         });
-        ShowCourse(infoD);
-        showDetail(infoD);
+        show_course(info);
+        show_detail(info);
     }
     catch(e){
-        Error_message(e);
+        error_message(e);
     }
 }
-function ShowCourse(Datajson){
-    var Course = document.createElement('h3');
-    var Eng = document.createElement('h5');
-    Course.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].course_name.split(" ")[0];
-    Course.className = "fw-bold";
-    Course.style = "color: #b5424f;";
-    Eng.innerHTML = ' &nbsp;&nbsp;'+ Datajson[0].course_name.replace(Datajson[0].course_name.split(" ")[0],"");
-    Eng.style = "color: #c1535c;";
-    title.appendChild(Course);
-    title.appendChild(Eng);
+
+function show_course(data){
+    var course = document.createElement('h3');
+    var en = document.createElement('h5');
+    course.innerHTML = ' &nbsp;&nbsp;'+ data[0].course_name.split(" ")[0];
+    course.className = "fw-bold";
+    course.style = "color: #b5424f;";
+    en.innerHTML = ' &nbsp;&nbsp;'+ data[0].course_name.replace(data[0].course_name.split(" ")[0],"");
+    en.style = "color: #c1535c;";
+    title.appendChild(course);
+    title.appendChild(en);
 }
-function showDetail(infoD){
-    for (i=0; i<infoD.length; i++){
+
+function show_detail(info){
+    for (i=0; i < info.length; i++){
         var Col = document.createElement('div');
         var Card = document.createElement('a');
         var Body = document.createElement('div');
@@ -70,13 +77,13 @@ function showDetail(infoD){
         var Detail = document.createElement('p');
         Col.className = "col-6";
         Card.className = "card m-1 list-group-item-action shadow";
-        Card.href = "detail.html?co_no=" + infoD[i].course_id + "&year_sem=" + infoD[i].year + "_" + infoD[i].semester + "&class_co=" + infoD[i].class_code;
+        Card.href = "detail.html?co_no=" + info[i].course_id + "&year_sem=" + info[i].year + "_" + info[i].semester + "&class_co=" + info[i].class_code;
         Body.className = "card-body";
         Title.className = "card-title";
-        Title.innerHTML = "開課學年: " + infoD[i].year + "-" + infoD[i].semester;
+        Title.innerHTML = "開課學年: " + info[i].year + "-" + info[i].semester;
         Title.style = "color: #733830;";
-        Detail.innerHTML = "課程碼: " + infoD[0].course_id + '<br>' + "開課系所: " + infoD[0].department.substr(0,3) 
-        + '<br>' + "授課教師: " + infoD[i].instructor + '<br>' + "班級" + infoD[i].class_code + ' &nbsp;';
+        Detail.innerHTML = "課程碼: " + info[0].course_id + '<br>' + "開課系所: " + info[0].department.substr(0,3) 
+        + '<br>' + "授課教師: " + info[i].instructor + '<br>' + "班級" + info[i].class_code + ' &nbsp;';
         Detail.style = "color: #733830;";
         Card.style = "text-decoration:none;"
         Body.appendChild(Title);
@@ -85,68 +92,4 @@ function showDetail(infoD){
         Col.appendChild(Card);   
         card.appendChild(Col)
     }
-}
-
-function showBars(Datajson){
-    list.innerHTML = '';
-    Datajson = Datajson.sort(function(a,b){
-        return a.course_id > b.course_id;
-    });
-    var temp = "";
-    var select = document.createElement('div');
-    select.className = "list-group";
-    for (i=0; i<Datajson.length; i++){
-        if (temp.course_id === Datajson[i].course_id){
-            continue;
-        }
-        var Link = document.createElement('a');
-        var Name = document.createElement('div');
-        var Department = document.createElement('span');
-        Link.href = "course.html?co_no=" +Datajson[i].course_id;
-        Link.className = "list-group-item d-flex list-group-item-action";
-        Name.innerHTML = '&nbsp' + Datajson[i].course_name.split(" ")[0];
-        Name.className = "me-auto";
-        Name.style = "color: #733830;"
-        Department.innerHTML = Datajson[i].department.substr(0,3);
-        Department.className = "badge rounded-pill badge-outline-primary";
-        Link.appendChild(Department);
-        Link.appendChild(Name);
-        select.appendChild(Link);
-        temp = Datajson[i];
-    }
-    list.appendChild(select);
-}
-
-function filterText(key, OriginData){
-    return OriginData.filter(function(elem, index){
-        if (elem.course_id.indexOf(key)!=-1){
-            return true;
-        }
-        if (elem.course_name){
-            if (elem.course_name.indexOf(key)!=-1){
-                return true
-            }
-        }
-        if (elem.department){
-            if(elem.department.indexOf(key)!=-1){
-                return true
-            }
-        }
-        if (elem.instructor){
-            if(elem.instructor.indexOf(key)!=-1){
-                return true
-            }
-        }
-        else{
-            return false;
-        }
-    })
-}
-
-function Error_message(msg){
-    var message = document.createElement('h4');
-    message.className = "text-center";
-    message.style= "color: #733830;";
-    message.innerHTML = msg;
-    card.appendChild(message);
 }
